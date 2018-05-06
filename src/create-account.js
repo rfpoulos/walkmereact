@@ -2,21 +2,63 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { fetchCreateAccount, fetchSignIn } from './fetch-data';
+import { updateInitialState } from './reducer-handlers';
 
-let CreateAccountDumb = () =>
+let CreateAccountDumb = ({ updateInitialState, history }) =>
     <div>
-        <div>
+        <form onSubmit={(event) => createNewAccount(event, history, updateInitialState)}>
             <input type="text" placeholder="email" name="email" />
             <input type="text" placeholder="username" name="username" />
             <input type="password" placeholder="password" name="password" />
-        </div>
-        <div>
             <h4>Upload Photo</h4>
-            <input type="file" name="profile_thumbnail"
-                accept="image/x-png,image/gif,image/jpeg" />
-        </div>
-        <button>Create Account</button>
+            <input type="file" name="thumbnail"
+                accept=".png, .jpg, .jpeg" />
+            <input type="text" name="aboutme" />
+            <button type="submit">Create Account</button>
+        </form>
         <Link to="/">Already have an account?  Go to sign-in.</Link>
     </div>
 
-export default CreateAccountDumb;
+let createNewAccount = (event, history, updateInitialState) => {
+    event.preventDefault();
+    let createFetchBody = {
+        email: event.target.email.value,
+        username: event.target.username.value,
+        password: event.target.password.value,
+        thumbnail:  event.target.thumbnail.value,
+        aboutme: event.target.aboutme.value
+    }
+    fetchCreateAccount(createFetchBody)
+    .then( success => {
+        if (success) {
+            let signInFetchBody = {
+                identifier: createFetchBody.email,
+                password: createFetchBody.password
+            }
+            fetchSignIn(signInFetchBody)
+            .then( data => {
+                console.log(data);
+                updateInitialState(data);
+                history.push('/homepage');
+            })
+        }
+    })
+}
+
+let mapStateToProps = (state) => {
+    return { };
+}
+
+let mapDispatchToProps = (dispatch, { history }) =>
+    ({
+        updateInitialState: (res) => dispatch(updateInitialState(res)),
+        history
+    })
+
+let CreateAccount = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CreateAccountDumb);
+
+export default CreateAccount;
