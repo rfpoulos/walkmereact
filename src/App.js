@@ -7,11 +7,15 @@ import {
           Switch
         } from 'react-router-dom';
 import SignIn from './sign-in';
+import CreateAccount from './create-account'
 let App = () =>
   <Router>
+    <div>
         <Switch>
-          <Route path="/" component={SignIn} />
+          <Route path="/create-account" component={ CreateAccount } />
+          <Route path="/" component={ SignIn } />
         </Switch>
+    </div>
   </Router>
 ;
 
