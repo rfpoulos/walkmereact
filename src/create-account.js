@@ -38,7 +38,6 @@ let createNewAccount = (event, history, updateInitialState) => {
             }
             fetchSignIn(signInFetchBody)
             .then( data => {
-                console.log(data);
                 updateInitialState(data);
                 history.push('/homepage');
             })
