@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 export const initialState = {
-    userObject: {}
+    userObject: '',
+    menuViewable: false
 }
 
 const UPDATE_INITIAL_STATE = "UPDATE_INITIAL_STATE";
@@ -13,8 +14,16 @@ let updateInitialStateAction = (state, action) => {
 }
 updateInitialState.toString = () => UPDATE_INITIAL_STATE;
 
+const UPDATE_MENU_VIEWABLE = "UPDATE_MENU_VIEWABLE";
+export let updateMenuViewable = () => ({type: UPDATE_MENU_VIEWABLE});
+let updateMenuViewableAction = (state, action) => {
+    return ({ ...state, menuViewable: !state.menuViewable });
+}
+updateMenuViewable.toString = () => UPDATE_MENU_VIEWABLE;
+
 let reducerHandlers = {
-    [updateInitialState]: updateInitialStateAction
+    [updateInitialState]: updateInitialStateAction,
+    [updateMenuViewable]: updateMenuViewableAction
 };
 
 export default reducerHandlers;
