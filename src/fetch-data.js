@@ -24,3 +24,13 @@ export let fetchSignIn = (input) =>
     })
     .then(res => res.json())
     .then(res => setTokenInLocalStorage(res));
+
+export let fetchUserObject = (token) =>
+fetch('http://localhost:5000/user', {
+    method: "GET",
+    headers: new Headers ({
+        "Content-Type": "application/json",
+        "Authorization": token
+        })
+    })
+    .then(res => res.json())
