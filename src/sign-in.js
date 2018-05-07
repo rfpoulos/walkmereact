@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchCreateAccount, fetchSignIn } from './fetch-data';
+import { fetchSignIn, fetchUserObject } from './fetch-data';
 import { updateInitialState } from './reducer-handlers';
 
 let SignInDumb = ({ history, updateInitialState}) =>
     <div>
+        {
+            checkLocalStorage(history, updateInitialState)
+        }
         <form onSubmit={(event) => signIn(event, history, updateInitialState)}>
             <input type="text" placeholder="Username or Email" name="identifier" />
             <input type="password" placeholder="password" name="password" />
@@ -26,6 +29,20 @@ let signIn = (event, history, updateInitialState) => {
         updateInitialState(data);
         history.push('/walks');
     })
+}
+
+let checkLocalStorage = (history, updateInitialState) => {
+    let localToken;
+    if (localStorage.getItem("token") != null) {
+        localToken = localStorage.getItem("token");
+    }
+    if (localToken) {
+        fetchUserObject(localToken)
+        .then(res => {
+            updateInitialState(res);
+            history.push('/walks');
+        })
+    }
 }
 
 let mapStateToProps = (state) =>
