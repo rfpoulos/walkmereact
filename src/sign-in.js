@@ -45,13 +45,14 @@ let checkLocalStorage = (history, updateInitialState) => {
     }
 }
 
-let mapStateToProps = (state) =>
-    ({ })
-
-let mapDispatchToProps = (dispatch, { history }) =>
-    ({
-        updateInitialState: (res) => dispatch(updateInitialState(res)),
+let mapStateToProps = (state, { history }) =>
+    ({ 
         history
+    })
+
+let mapDispatchToProps = (dispatch) =>
+    ({
+        updateInitialState: (res) => dispatch(updateInitialState(res))
     })
 
 let SignIn = connect(

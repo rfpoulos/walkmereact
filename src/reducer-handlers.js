@@ -9,8 +9,7 @@ export const initialState = {
 const UPDATE_INITIAL_STATE = "UPDATE_INITIAL_STATE";
 export let updateInitialState = (payload) => ({type: UPDATE_INITIAL_STATE, payload});
 let updateInitialStateAction = (state, action) => {
-    let userObject = Object.assign({}, action.payload);
-    return ({ ...state, userObject });
+    return ({ ...state, userObject: action.payload });
 }
 updateInitialState.toString = () => UPDATE_INITIAL_STATE;
 

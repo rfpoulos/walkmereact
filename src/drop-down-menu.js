@@ -7,9 +7,10 @@ let DropDownMenuDumb = ({ menuViewable }) =>
     <div className={isViewable(menuViewable)}>
         <ul>
             <li>
-                <Link to="/walks">Walks</Link>
+                <Link to="/profile">Profile</Link>
             </li>
             <li>
+                <Link to="/walks">Find Walks</Link>
             </li>
         </ul>
     </div>
