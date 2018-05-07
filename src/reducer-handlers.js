@@ -15,7 +15,7 @@ let updateInitialStateAction = (state, action) => {
 updateInitialState.toString = () => UPDATE_INITIAL_STATE;
 
 const UPDATE_MENU_VIEWABLE = "UPDATE_MENU_VIEWABLE";
-export let updateMenuViewable = (payload) => ({type: UPDATE_MENU_VIEWABLE, payload});
+export let updateMenuViewable = () => ({type: UPDATE_MENU_VIEWABLE});
 let updateMenuViewableAction = (state, action) => {
     return ({ ...state, menuViewable: !state.menuViewable });
 }
