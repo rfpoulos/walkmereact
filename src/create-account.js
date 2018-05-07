@@ -39,7 +39,7 @@ let createNewAccount = (event, history, updateInitialState) => {
             fetchSignIn(signInFetchBody)
             .then( data => {
                 updateInitialState(data);
-                history.push('/homepage');
+                history.push('/walks');
             })
         }
     })

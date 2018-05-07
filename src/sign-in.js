@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchCreateAccount, fetchSignIn } from './fetch-data';
 import { updateInitialState } from './reducer-handlers';
 
-let SignInDumb = ({event, history, updateInitialState}) =>
+let SignInDumb = ({ history, updateInitialState}) =>
     <div>
         <form onSubmit={(event) => signIn(event, history, updateInitialState)}>
             <input type="text" placeholder="Username or Email" name="identifier" />
@@ -24,7 +24,7 @@ let signIn = (event, history, updateInitialState) => {
     fetchSignIn(signInFetchBody)
     .then( data => {
         updateInitialState(data);
-        history.push('/homepage');
+        history.push('/walks');
     })
 }
 

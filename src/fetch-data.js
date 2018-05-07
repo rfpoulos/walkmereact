@@ -1,3 +1,9 @@
+let setTokenInLocalStorage = (userInfo) => {
+    let token = userInfo.token;
+    localStorage.setItem('token', token);
+    return userInfo;
+}
+
 export let fetchCreateAccount = (input) =>
     fetch('http://localhost:5000/createaccount', {
         method: "POST",
@@ -16,4 +22,5 @@ export let fetchSignIn = (input) =>
             "Content-Type": "application/json",
             })
     })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(res => setTokenInLocalStorage(res));
