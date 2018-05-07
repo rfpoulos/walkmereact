@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { updateInitialState } from './reducer-handlers';
 
@@ -23,7 +24,7 @@ let shouldRender = (userObject, updateInitialState, history) => {
 let logoutFunction = (updateInitialState, history) => {
     localStorage.removeItem('token');
     updateInitialState('');
-    history.push();
+    history.push('/');
 }
 
 let mapStateToProps = (state, { history }) =>
@@ -34,7 +35,7 @@ let mapStateToProps = (state, { history }) =>
 
 let mapDispatchToProps = (dispatch) =>
     ({ 
-        updateInitialState: (res) => dispatch(updateInitialState(res))
+        updateInitialState: (res) => dispatch(updateInitialState(res)),
     })
 
 let Logout = connect(
@@ -42,4 +43,4 @@ let Logout = connect(
     mapDispatchToProps
 )(LogoutDumb);
 
-export default Logout;
+export default withRouter(Logout);
