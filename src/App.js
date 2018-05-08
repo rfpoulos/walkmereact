@@ -11,6 +11,7 @@ import CreateAccount from './create-account';
 import Header from './header';
 import Walks from './walks';
 import DropDownMenu from './drop-down-menu';
+import Profile from './profile';
 
 let App = () =>
   <Router>
@@ -18,6 +19,7 @@ let App = () =>
         <Header />
         <DropDownMenu />
         <Switch>
+          <Route path="/profile" component ={ Profile } />
           <Route path="/walks" component={ Walks } />
           <Route path="/create-account" component={ CreateAccount } />
           <Route path="/" component={ SignIn } />
