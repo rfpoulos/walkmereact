@@ -9,10 +9,24 @@ export let fetchCreateAccount = (input) =>
         method: "POST",
         body: JSON.stringify(input),
         headers: new Headers ({
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
             })
     })
     .then(res => res.text());
+
+export let postProfilePicture = (data, token) => {
+    let formData = new FormData();
+    formData.append('thumbnail', data);
+    console.log(token);
+    return fetch('http://localhost:5000/postprofilepic', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": token
+            })
+    }).then(res => res.text());
+}
 
 export let fetchSignIn = (input) =>
     fetch('http://localhost:5000/signin', {
@@ -30,7 +44,7 @@ fetch('http://localhost:5000/user', {
     method: "GET",
     headers: new Headers ({
         "Content-Type": "application/json",
-        "Authorization": token
+        "authorization": token
         })
     })
     .then(res => res.json())
