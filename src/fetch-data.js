@@ -17,13 +17,12 @@ export let fetchCreateAccount = (input) =>
 export let postProfilePicture = (data, token) => {
     let formData = new FormData();
     formData.append('thumbnail', data);
-    console.log(token);
     return fetch('http://localhost:5000/postprofilepic', {
         method: 'POST',
         body: formData,
         mode: 'cors',
         headers: new Headers ({
-        "authorization": token
+        "authorization": localStorage.getItem('token') 
             })
     }).then(res => res.text());
 }
@@ -44,7 +43,60 @@ fetch('http://localhost:5000/user', {
     method: "GET",
     headers: new Headers ({
         "Content-Type": "application/json",
-        "authorization": token
+        "authorization": localStorage.getItem('token') 
         })
     })
     .then(res => res.json())
+
+export let postInitialWalk = (input) =>
+    fetch('http://localhost:5000/postwalk', {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+            })
+    })
+    .then(res => res.json());
+
+export let postWalkThumbnail = (id, data) => {
+    let formData = new FormData();
+    formData.append('walk-thumbnail', data);
+    formData.append('id', id)
+    return fetch('http://localhost:5000/postwalkthumbnail', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": localStorage.getItem('token') 
+            })
+    }).then(res => res.text());
+}
+
+export let postWalkAudio = (id, data) => {
+    let formData = new FormData();
+    formData.append('walk-audio', data);
+    formData.append('id', id)
+    return fetch('http://localhost:5000/postwalkaudio', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": localStorage.getItem('token') 
+            })
+    }).then(res => res.text());
+}
+
+export let postWalkVideo = (id, data) => {
+    let formData = new FormData();
+    formData.append('walk-audio', data);
+    formData.append('id', id)
+    return fetch('http://localhost:5000/postwalkvideo', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": localStorage.getItem('token') 
+            })
+    }).then(res => res.text());
+}

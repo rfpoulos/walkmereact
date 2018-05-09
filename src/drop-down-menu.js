@@ -23,7 +23,7 @@ let DropDownMenuDumb = ({ menuViewable, updateMenuViewable }) =>
                 <Link to="/contributions">Your Contributed Walks</Link>
             </li>
             <li>
-                <Link to="/addawalk">Contribute a Walk</Link>
+                <Link to="/addwalk">Contribute a Walk</Link>
             </li>
         </ul>
     </div>
