@@ -1,23 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { 
         fetchCreateAccount, 
         fetchSignIn,
-        putProfilePicture
         } from './fetch-data';
 import { updateInitialState } from './reducer-handlers';
 
 let CreateAccountDumb = ({ updateInitialState, history }) =>
-    <div>
-        <form onSubmit={(event) => createNewAccount(event, history, updateInitialState)}>
+    <div className="create-account-container">
+        <form className="create-account" onSubmit={(event) => createNewAccount(event, history, updateInitialState)}>
             <input type="email" placeholder="email" name="email" />
             <input type="text" placeholder="username" name="username" />
             <input type="password" placeholder="password" name="password" />
             <button type="submit">Create Account</button>
+            <Link to="/">Already have an account?  Go to sign-in.</Link>
         </form>
-        <Link to="/">Already have an account?  Go to sign-in.</Link>
     </div>
 
 let createNewAccount = (event, history, updateInitialState) => {

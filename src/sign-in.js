@@ -1,48 +1,47 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSignIn, fetchUserObject } from './fetch-data';
+import { 
+        fetchSignIn, 
+        fetchUserObject, 
+     } from './fetch-data';
 import { updateInitialState } from './reducer-handlers';
 
 let SignInDumb = ({ history, updateInitialState}) =>
-    <div>
+    <div className="create-account-container">
         {
             checkLocalStorage(history, updateInitialState)
         }
-        <form onSubmit={(event) => signIn(event, history, updateInitialState)}>
+        <form className="create-account" onSubmit={(event) => signIn(event, history, updateInitialState)}>
             <input type="text" placeholder="Username or Email" name="identifier" />
             <input type="password" placeholder="password" name="password" />
             <button type="submit">Sign In</button>
+            <Link to="/create-account"> New user?  Create Account.</Link>
         </form>
-        <Link to="/create-account"> New user?  Create Account.</Link>
     </div>
 
-let signIn = (event, history, updateInitialState) => {
+let signIn = async (event, history, updateInitialState) => {
     event.preventDefault();
     let signInFetchBody = {
         identifier: event.target.identifier.value,
         password: event.target.password.value
     }
-    fetchSignIn(signInFetchBody)
-    .then( data => {
-        updateInitialState(data);
+    let userObject = await fetchSignIn(signInFetchBody)
+        updateInitialState(userObject);
         history.push('/walks');
-    })
 }
 
 let checkLocalStorage = (history, updateInitialState) => {
-    let localToken;
-    if (localStorage.getItem("token") != null) {
-        localToken = localStorage.getItem("token");
-    }
+    let localToken = localStorage.getItem("token");
     if (localToken) {
-        fetchUserObject(localToken)
-        .then(res => {
-            updateInitialState(res);
-            history.push('/walks');
-        })
+        getInitialState(history, updateInitialState);
     }
+}
+
+let getInitialState = async (history, updateInitialState) => {
+    let result = await fetchUserObject();
+    updateInitialState(result);
+    history.push('/walks');
 }
 
 let mapStateToProps = (state, { history }) =>

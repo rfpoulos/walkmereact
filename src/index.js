@@ -4,11 +4,15 @@ import './index.css';
 import App from './App';
 
 import { Provider } from 'react-redux';
-import Store from './store';
+import { store, persistor } from './store';
+
+import { PersistGate } from 'redux-persist/integration/react'
 
 let ui = 
-    <Provider store={ Store }>
-        <App />
+    <Provider store={ store }>
+        <PersistGate loading={null} persistor={persistor}>
+            <App />
+        </PersistGate>
     </Provider>
 
 ReactDOM.render(ui, document.getElementById('root'));

@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateMenuViewable } from './reducer-handlers';
+import Hamburger from './images/bars.svg'
 
 let HamburgerMenuDumb = ({ userObject, updateMenuViewable }) => 
     <li>
@@ -13,9 +12,7 @@ let HamburgerMenuDumb = ({ userObject, updateMenuViewable }) =>
 
 let shouldRender = (userObject, updateMenuViewable) => { 
     if (userObject) {
-        return <h2 onClick={ () =>
-                             updateMenuViewable()
-        }>Menu</h2>
+        return <img className="hamburger" src={Hamburger} alt="Menu" onClick={ () => updateMenuViewable() } />
     }
 }
 

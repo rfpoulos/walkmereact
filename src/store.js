@@ -1,10 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import reducer from './reducer';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-let Store = createStore(reducer, 
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const persistConfig = {
+    key: 'root',
+    storage,
+  };
 
-export default Store;
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+export let store = createStore(persistedReducer, 
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+
+export let persistor = persistStore(store);

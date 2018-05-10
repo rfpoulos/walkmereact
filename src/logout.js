@@ -1,29 +1,27 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { updateInitialState } from './reducer-handlers';
+import { revertInitialState, updateMenuViewable } from './reducer-handlers';
 
-let LogoutDumb = ({ userObject, updateInitialState, history }) => 
-    <li>
+let LogoutDumb = ({ userObject, revertInitialState, history, updateMenuViewable }) => 
+    <li onClick={() => updateMenuViewable()}>
         {
-            shouldRender(userObject, updateInitialState, history)
+            shouldRender(userObject, revertInitialState, history)
         }
     </li>
 
-let shouldRender = (userObject, updateInitialState, history) => { 
+let shouldRender = (userObject, revertInitialState, history) => { 
     if (userObject) {
-        return <h2 onClick={() =>
-            logoutFunction(updateInitialState, history)
+        return <span className="nav" onClick={() =>
+            logoutFunction(revertInitialState, history)
         }
-        >Logout</h2>
+        >Logout</span>
     }
 }
 
-let logoutFunction = (updateInitialState, history) => {
+let logoutFunction = (revertInitialState, history) => {
     localStorage.removeItem('token');
-    updateInitialState('');
+    revertInitialState();
     history.push('/');
 }
 
@@ -35,7 +33,8 @@ let mapStateToProps = (state, { history }) =>
 
 let mapDispatchToProps = (dispatch) =>
     ({ 
-        updateInitialState: (res) => dispatch(updateInitialState(res)),
+        revertInitialState: () => dispatch(revertInitialState()),
+        updateMenuViewable: () => dispatch(updateMenuViewable()),
     })
 
 let Logout = connect(
