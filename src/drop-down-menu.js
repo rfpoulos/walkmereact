@@ -1,31 +1,40 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateMenuViewable } from './reducer-handlers';
+import Logout from './logout'
 
-let DropDownMenuDumb = ({ menuViewable, updateMenuViewable }) =>
+let DropDownMenuDumb = ({ menuViewable, updateMenuViewable, userObject }) =>
     <div className={isViewable(menuViewable)}>
-        <ul onClick={() => updateMenuViewable()}>
-            <li>
-                <Link to="/profile">Profile</Link>
-            </li>
-            <li>
-                <Link to="/walks">Find Walks</Link>
-            </li>
-            <li>
-                <Link to="/favorites">Favorite Walks</Link>
-            </li>
-            <li>
-                <Link to="/offline">Offline Walks</Link>
-            </li>
-            <li>
-                <Link to="/contributions">Your Contributed Walks</Link>
-            </li>
-            <li>
-                <Link to="/addwalk">Contribute a Walk</Link>
-            </li>
-        </ul>
+        <div className="menu">
+            <div className="profile-container">
+                <div className="menu-picture">
+                    <img className="thumbnail" alt="Hamburger Menu" src={'http://localhost:5000/' + userObject.thumbnail} />
+                </div>
+                <h4>{userObject.username}</h4>
+            </div>
+            <ul className="menu-nav" onClick={() => updateMenuViewable()}>
+                <li>
+                    <Link className="nav" to="/profile">Profile</Link>
+                </li>
+                <li>
+                    <Link className="nav" to="/walks">Find Walks</Link>
+                </li>
+                <li>
+                    <Link className="nav" to="/favorites">Favorite Walks</Link>
+                </li>
+                <li>
+                    <Link className="nav" to="/offline">Offline Walks</Link>
+                </li>
+                <li>
+                    <Link className="nav" to="/contributions">Your Contributed Walks</Link>
+                </li>
+                <li>
+                    <Link className="nav" to="/addwalk">Contribute a Walk</Link>
+                </li>
+                <Logout />
+            </ul>
+        </div>
     </div>
 
 let isViewable = (boolean) => {
@@ -38,7 +47,8 @@ let isViewable = (boolean) => {
 
 let mapStateToProps = (state) =>
     ({
-        menuViewable: state.menuViewable
+        menuViewable: state.menuViewable,
+        userObject: state.userObject,
     })
 
 let mapDispatchToProps = (dispatch) =>

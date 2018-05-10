@@ -1,15 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import HamburgerMenu from './hamburger-menu';
-import Logout from './logout';
+import appTitle from './images/walkme-nav.png'
 
 let HeaderDumb = () =>
     <ul className="header">
         <HamburgerMenu />
-        <li><h2>Header!</h2></li>
-        <Logout />
+        <li>
+            <img className="header-logo" alt="logo" src={appTitle} />
+        </li>
+        <li>
+        </li>
     </ul>
 
 export default HeaderDumb;

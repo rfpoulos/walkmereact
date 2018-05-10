@@ -89,7 +89,7 @@ export let postWalkAudio = (id, data) => {
 
 export let postWalkVideo = (id, data) => {
     let formData = new FormData();
-    formData.append('walk-audio', data);
+    formData.append('walk-video', data);
     formData.append('id', id)
     return fetch('http://localhost:5000/postwalkvideo', {
         method: 'POST',
@@ -100,3 +100,23 @@ export let postWalkVideo = (id, data) => {
             })
     }).then(res => res.text());
 }
+
+export let postPoi = (input) =>
+    fetch('http://localhost:5000/postpoi', {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+            })
+    })
+    .then(res => res.json());
+
+export let fetchUserLocation = () =>
+    fetch(`https://www.googleapis.com/
+            geolocation/v1/geolocate?
+            key=AIzaSyBfiseqKd83EqCDMVV4nKwH_7-js_Nv7VU`,
+        {
+            method: 'POST'
+        })
+        .then(res => res.json())

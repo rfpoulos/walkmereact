@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import reducerHandlers from './reducer-handlers';
 import { initialState } from './reducer-handlers';
 

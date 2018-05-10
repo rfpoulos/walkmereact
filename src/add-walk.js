@@ -1,36 +1,43 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AddWalkForm from './add-walk-form'
+import { withRouter } from 'react-router';
+import {
+        postInitialWalk,
+    } from './fetch-data'
+import { updateWalkBeingEdited, resetEditablePois} from './reducer-handlers';
 
-let AddWalkDumb = ({ walkBeingEdited }) =>
-    <div>
-        { whatToDisplay(walkBeingEdited) }
+let AddWalkDumb = ({ updateWalkBeingEdited, resetEditablePois, history }) =>
+    <div className="add-walk-container">
+        <form className="add-walk" onSubmit={(event) => submitWalk(event, updateWalkBeingEdited, history, resetEditablePois)}>
+            <h2 className="self-center"><strong>Step 1:</strong> Add Your Walk!</h2>
+            <input type="text" name="title" placeholder="Title (required)" />
+            <textarea name="description" placeholder="description" />
+            <button className="self-center" type="submit">Start a Walk!</button>
+        </form>
     </div>
 
-let whatToDisplay = (walkBeingEdited) => {
-    if (walkBeingEdited) {
-        return(
-            <div>
-                <img src={walkBeingEdited.thumbnail} />
-                <h1>{walkBeingEdited.title}</h1>
-                <h4>Guide {walkBeingEdited.userid}</h4>
-                <p>{walkBeingEdited.description}</p>
-            </div>
-        )
-    } else {
-        return <AddWalkForm />
+let submitWalk = async (event, updateWalkBeingEdited, history, resetEditablePois) => {
+    event.preventDefault();
+    let initialWalkObject = {
+        title: event.target.title.value,
+        description: event.target.title.value
     }
+    let walkData = await postInitialWalk(initialWalkObject);
+    let walk = walkData[0];
+    updateWalkBeingEdited(walk);
+    resetEditablePois();
+    history.push('/editwalk/' + walk.id);
 }
 
-let mapStateToProps = (state) =>
+let mapStateToProps = (state, { history }) =>
     ({
-        walkBeingEdited: state.walkBeingEdited
+        history,
     })
 
 let mapDispatchToProps = (dispatch) =>
     ({ 
+        updateWalkBeingEdited: (walk) => dispatch(updateWalkBeingEdited(walk)),
+        resetEditablePois: () => dispatch(resetEditablePois()),
     })
 
 let AddWalk = connect(
@@ -38,4 +45,4 @@ let AddWalk = connect(
     mapDispatchToProps
 )(AddWalkDumb);
 
-export default AddWalk;
+export default withRouter(AddWalk);
