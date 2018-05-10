@@ -17,7 +17,6 @@ let MapDumb = ({
                 displayedPois, 
                 onToggleOpen,
                 onFitBounds,
-                onToggleClose
             }) =>
     <GoogleMap
     defaultCenter={{ lat: -34.397, lng: 150.644 }}
@@ -30,7 +29,7 @@ let MapDumb = ({
         displayedPois.map((poi, i) =>
         <Marker
             position={{ lat: parseFloat(poi.lat), lng: parseFloat(poi.long) }}
-            onClick={onToggleOpen}
+            click={onToggleOpen}
             key={i}
             >
             <InfoWindow onCloseClick={onToggleOpen}>

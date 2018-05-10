@@ -40,6 +40,13 @@ let addEditablePoiAction = (state, action) => {
 }
 addEditablePoi.toString = () => ADD_EDITABLE_POI;
 
+const UPDATE_EDITABLE_POIS = "UPDATE_EDITABLE_POIS";
+export let updateEditablePois = (payload) => ({type: UPDATE_EDITABLE_POIS, payload});
+let updateEditablePoisAction = (state, action) => {
+    return ({ ...state, editablePois: action.payload });
+}
+updateEditablePois.toString = () => UPDATE_EDITABLE_POIS;
+
 const RESET_EDITABLE_POIS = "RESET_EDITABLE_POIS";
 export let resetEditablePois = () => ({type: RESET_EDITABLE_POIS});
 let resetEditablePoisAction = (state, action) => {
@@ -54,6 +61,7 @@ let reducerHandlers = {
     [addEditablePoi]: addEditablePoiAction,
     [revertInitialState]: revertInitialStateAction,
     [resetEditablePois]: resetEditablePoisAction,
+    [updateEditablePois]: updateEditablePoisAction,
 };
 
 export default reducerHandlers;
