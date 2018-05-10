@@ -6,6 +6,7 @@ import {
 import { StandaloneSearchBox } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
 import Map from './google-map';
 import { postPoi } from './fetch-data';
+require('dotenv').config();
 
 let PoiSearchBoxDumb = ({ 
                             onSearchBoxMounted, 
@@ -65,7 +66,7 @@ let submitPoi = async (event, walkid, addEditablePoi, position) => {
 let PoiSearchBox = compose(
   withProps({
     googleMapURL: `https://maps.googleapis.com/maps/api/js?
-                    key=AIzaSyClWcybYgQsERDoP2QfZOThGZxpKj8eS5Q
+                    key=${process.env.GOOGLE_API_KEY}
                     &v=3.exp&libraries=geometry,drawing,places`,
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
