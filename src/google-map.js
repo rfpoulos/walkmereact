@@ -8,6 +8,7 @@ import {
   Marker,
   InfoWindow,
 } from 'react-google-maps';
+require('dotenv').config();
 
 let MapDumb = ({ 
                 zoom, 
@@ -16,7 +17,6 @@ let MapDumb = ({
                 displayedPois, 
                 onToggleOpen,
                 onFitBounds,
-                onToggleClose
             }) =>
     <GoogleMap
     defaultCenter={{ lat: -34.397, lng: 150.644 }}
@@ -44,7 +44,7 @@ let MapDumb = ({
 let Map = compose(
   withProps({
     googleMapURL: `https://maps.googleapis.com/maps/api/js?
-                    key=AIzaSyClWcybYgQsERDoP2QfZOThGZxpKj8eS5Q
+                    key=${process.env.GOOGLE_API_KEY}
                     =3.exp&libraries=geometry,drawing,places`,
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `360px` }} />,
