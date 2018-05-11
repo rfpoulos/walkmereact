@@ -29,7 +29,7 @@ let MapDumb = ({
         displayedPois.map((poi, i) =>
         <Marker
             position={{ lat: parseFloat(poi.lat), lng: parseFloat(poi.long) }}
-            click={onToggleOpen}
+            onClick={onToggleOpen}
             key={i}
             >
             <InfoWindow onCloseClick={onToggleOpen}>
