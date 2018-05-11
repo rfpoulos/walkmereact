@@ -112,6 +112,16 @@ export let postPoi = (input) =>
     })
     .then(res => res.json());
 
+export let updatePoiPositions = (pois) =>
+    fetch('http://localhost:5000/updatepoipositions', {
+        method: "POST",
+        body: JSON.stringify(pois),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.text());
+
 export let fetchUserLocation = () =>
     fetch(`https://www.googleapis.com/
             geolocation/v1/geolocate?

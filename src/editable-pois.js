@@ -5,6 +5,7 @@ import dottedLine from './images/Dotted-line.png';
 import uparrow from './images/angle-double-up.svg';
 import downarrow from './images/angle-double-down.svg';
 import { updateEditablePois } from './reducer-handlers';
+import { updatePoiPositions } from './fetch-data';
 
 let EditablePoisDumb = ({ editablePois, beingEditedPoi, updateEditablePois }) =>
     <div>
@@ -56,41 +57,50 @@ let shouldDownArrowDisplay = (poi, editablePois, updateEditablePois) => {
 }
 
 let moveUp = (poi, editablePois, updateEditablePois) => {
+    let pois = [];
     let firstArray = editablePois.map(element => {
         if(element.position === poi.position - 1) {
             element.position += 1;
+            pois.push(element);
         }
         return element
         });
     let secondArray = firstArray.map(element => {
         if(element.id === poi.id) {
             element.position -= 1;
+            pois.push(element);
         }
         return element;
         });
+    updatePoiPositions
     let newEditablePois = [];
     secondArray.map(element => 
         newEditablePois[element.position] = element);
-    updateEditablePois(newEditablePois);
+    updatePoiPositions(pois)
+    .then(data => updateEditablePois(newEditablePois));
 }
 
 let moveDown = (poi, editablePois, updateEditablePois) => {
+    let pois = [];
     let firstArray = editablePois.map(element => {
         if(element.position === poi.position + 1) {
             element.position -= 1;
+            pois.push(element);
         }
         return element;
         });
     let secondArray = firstArray.map(element => {
         if(element.id === poi.id) {
             element.position += 1;
+            pois.push(element);
         }
         return element;
         });
     let newEditablePois = [];
     secondArray.map(element => 
         newEditablePois[element.position] = element);
-    updateEditablePois(newEditablePois);
+    updatePoiPositions(pois)
+    .then(data => updateEditablePois(newEditablePois));
 }
 
 let mapStateToProps = (state) =>
