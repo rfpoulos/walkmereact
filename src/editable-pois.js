@@ -72,7 +72,6 @@ let moveUp = (poi, editablePois, updateEditablePois) => {
         }
         return element;
         });
-    updatePoiPositions
     let newEditablePois = [];
     secondArray.map(element => 
         newEditablePois[element.position] = element);
