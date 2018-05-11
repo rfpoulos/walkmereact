@@ -24,10 +24,12 @@ let EditablePoisDumb = ({ editablePois, beingEditedPoi, updateEditablePois }) =>
                         </div>
                     </div>
                     <div className="arrows">
-                        <img className="arrow" src={uparrow} alt="Up Arrow"
-                            onClick={() => moveUp(poi, editablePois, updateEditablePois)} />
-                        <img className="arrow" src={downarrow} alt="Down Arrow"
-                            onClick={() => moveDown(poi, editablePois, updateEditablePois)} />
+                    {
+                        shouldUpArrowDisplay(poi, editablePois, updateEditablePois)
+                    }
+                    {
+                        shouldDownArrowDisplay(poi, editablePois, updateEditablePois)
+                    }
                     </div>
                 </div>
                 <div className="column-center">
@@ -38,6 +40,20 @@ let EditablePoisDumb = ({ editablePois, beingEditedPoi, updateEditablePois }) =>
         )
     }
     </div>
+
+let shouldUpArrowDisplay = (poi, editablePois, updateEditablePois) => {
+    if (poi.position !== 0) {
+        return <img className="arrow" src={uparrow} alt="Up Arrow"
+            onClick={() => moveUp(poi, editablePois, updateEditablePois)} />
+    }
+}
+
+let shouldDownArrowDisplay = (poi, editablePois, updateEditablePois) => {
+    if (poi.position !== editablePois.length - 1) {
+        return <img className="arrow" src={downarrow} alt="Down Arrow"
+        onClick={() => moveDown(poi, editablePois, updateEditablePois)} />
+    }
+}
 
 let moveUp = (poi, editablePois, updateEditablePois) => {
     let firstArray = editablePois.map(element => {
@@ -65,7 +81,7 @@ let moveDown = (poi, editablePois, updateEditablePois) => {
         }
         return element;
         });
-    let secondArray = editablePois.map(element => {
+    let secondArray = firstArray.map(element => {
         if(element.id === poi.id) {
             element.position += 1;
         }
