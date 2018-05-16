@@ -5,14 +5,14 @@ import {
         fetchSignIn, 
         fetchUserObject, 
      } from './fetch-data';
-import { updateInitialState } from './reducer-handlers';
+import { updateUserObject } from './reducer-handlers';
 
-let SignInDumb = ({ history, updateInitialState}) =>
+let SignInDumb = ({ history, updateUserObject}) =>
     <div className="create-account-container">
         {
-            checkLocalStorage(history, updateInitialState)
+            checkLocalStorage(history, updateUserObject)
         }
-        <form className="create-account" onSubmit={(event) => signIn(event, history, updateInitialState)}>
+        <form className="create-account" onSubmit={(event) => signIn(event, history, updateUserObject)}>
             <input type="text" placeholder="Username or Email" name="identifier" />
             <input type="password" placeholder="password" name="password" />
             <button type="submit">Sign In</button>
@@ -20,27 +20,27 @@ let SignInDumb = ({ history, updateInitialState}) =>
         </form>
     </div>
 
-let signIn = async (event, history, updateInitialState) => {
+let signIn = async (event, history, updateUserObject) => {
     event.preventDefault();
     let signInFetchBody = {
         identifier: event.target.identifier.value,
         password: event.target.password.value
     }
     let userObject = await fetchSignIn(signInFetchBody)
-        updateInitialState(userObject);
+        updateUserObject(userObject);
         history.push('/walks');
 }
 
-let checkLocalStorage = (history, updateInitialState) => {
+let checkLocalStorage = (history, updateUserObject) => {
     let localToken = localStorage.getItem("token");
     if (localToken) {
-        getInitialState(history, updateInitialState);
+        getUserupdateUserObject(history, updateUserObject);
     }
 }
 
-let getInitialState = async (history, updateInitialState) => {
+let getUserupdateUserObject = async (history, updateUserObject) => {
     let result = await fetchUserObject();
-    updateInitialState(result);
+    updateUserObject(result);
     history.push('/walks');
 }
 
@@ -51,7 +51,7 @@ let mapStateToProps = (state, { history }) =>
 
 let mapDispatchToProps = (dispatch) =>
     ({
-        updateInitialState: (res) => dispatch(updateInitialState(res))
+        updateUserObject: (res) => dispatch(updateUserObject(res))
     })
 
 let SignIn = connect(

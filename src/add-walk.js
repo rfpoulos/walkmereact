@@ -9,8 +9,8 @@ import { updateWalkBeingEdited, resetEditablePois} from './reducer-handlers';
 let AddWalkDumb = ({ updateWalkBeingEdited, resetEditablePois, history }) =>
     <div className="add-walk-container">
         <form className="add-walk" onSubmit={(event) => submitWalk(event, updateWalkBeingEdited, history, resetEditablePois)}>
-            <h2 className="self-center"><strong>Step 1:</strong> Add Your Walk!</h2>
-            <input type="text" name="title" placeholder="Title (required)" />
+            <h2 className="self-center"><strong>Step 1:</strong> Initiate Your Walk!</h2>
+            <input type="text" maxlength="20" name="title" placeholder="Title (required)" />
             <textarea name="description" placeholder="description" />
             <button className="self-center" type="submit">Start a Walk!</button>
         </form>
@@ -20,7 +20,7 @@ let submitWalk = async (event, updateWalkBeingEdited, history, resetEditablePois
     event.preventDefault();
     let initialWalkObject = {
         title: event.target.title.value,
-        description: event.target.title.value
+        description: event.target.description.value
     }
     let walkData = await postInitialWalk(initialWalkObject);
     let walk = walkData[0];

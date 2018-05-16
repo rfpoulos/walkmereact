@@ -1,21 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateMenuViewable } from './reducer-handlers';
+import { 
+            updateMenuViewable, 
+            updateProfileBeingViewed, 
+            updateEditableWalks,
+         } from './reducer-handlers';
 import Logout from './logout'
+import { server } from './variables';
+import { getContributedWalks } from './fetch-data';
 
-let DropDownMenuDumb = ({ menuViewable, updateMenuViewable, userObject }) =>
+let DropDownMenuDumb = ({ 
+                            menuViewable, 
+                            updateMenuViewable, 
+                            userObject, 
+                            updateProfileBeingViewed,
+                            updateEditableWalks,
+                        }) =>
     <div className={isViewable(menuViewable)}>
         <div className="menu">
             <div className="profile-container">
                 <div className="menu-picture">
-                    <img className="thumbnail" alt="Hamburger Menu" src={'http://localhost:5000/' + userObject.thumbnail} />
+                    <img className="thumbnail" alt="Hamburger Menu" src={server + '/' + userObject.thumbnail} />
                 </div>
                 <h4>{userObject.username}</h4>
             </div>
             <ul className="menu-nav" onClick={() => updateMenuViewable()}>
                 <li>
-                    <Link className="nav" to="/profile">Profile</Link>
+                    <Link className="nav" to="/profile/" 
+                        onClick={() => updateProfileBeingViewed(userObject)}
+                    >Profile</Link>
                 </li>
                 <li>
                     <Link className="nav" to="/walks">Find Walks</Link>
@@ -27,7 +41,11 @@ let DropDownMenuDumb = ({ menuViewable, updateMenuViewable, userObject }) =>
                     <Link className="nav" to="/offline">Offline Walks</Link>
                 </li>
                 <li>
-                    <Link className="nav" to="/contributions">Your Contributed Walks</Link>
+                    <Link className="nav" to="/yourwalks"
+                        onClick={() => getContributedWalks()
+                            .then(data =>  updateEditableWalks(data))}
+                    >Your Contributed Walks
+                    </Link>
                 </li>
                 <li>
                     <Link className="nav" to="/addwalk">Contribute a Walk</Link>
@@ -53,7 +71,9 @@ let mapStateToProps = (state) =>
 
 let mapDispatchToProps = (dispatch) =>
     ({ 
-        updateMenuViewable: () => dispatch(updateMenuViewable())
+        updateMenuViewable: () => dispatch(updateMenuViewable()),
+        updateProfileBeingViewed: (profile) => dispatch(updateProfileBeingViewed(profile)),
+        updateEditableWalks: (data) => dispatch(updateEditableWalks(data)),
     })
 
 let DropDownMenu = connect(

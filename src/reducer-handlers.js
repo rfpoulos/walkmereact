@@ -3,15 +3,25 @@ export const initialState = {
     menuViewable: false,
     walkBeingEdited: '',
     editablePois: [],
-    beingEditedPoi: {},
+    poiBeingEdited: '',
+    profileBeingViewed: '',
+    editableWalks: [],
+    currentLocation: '',
 }
 
-const UPDATE_INITIAL_STATE = "UPDATE_INITIAL_STATE";
-export let updateInitialState = (payload) => ({type: UPDATE_INITIAL_STATE, payload});
-let updateInitialStateAction = (state, action) => {
+const UPDATE_USER_OBJECT = "UPDATE_USER_OBJECT";
+export let updateUserObject = (payload) => ({type: UPDATE_USER_OBJECT, payload});
+let updateUserObjectAction = (state, action) => {
     return ({ ...state, userObject: action.payload });
 }
-updateInitialState.toString = () => UPDATE_INITIAL_STATE;
+updateUserObject.toString = () => UPDATE_USER_OBJECT;
+
+const UPDATE_PROFILE_BEING_VIEWED = "UPDATE_PROFILE_BEING_VIEWED";
+export let updateProfileBeingViewed = (payload) => ({type: UPDATE_PROFILE_BEING_VIEWED, payload});
+let updateProfileBeingViewedAction = (state, action) => {
+    return ({ ...state, profileBeingViewed: action.payload });
+}
+updateProfileBeingViewed.toString = () => UPDATE_PROFILE_BEING_VIEWED;
 
 const REVERT_INITIAL_STATE = "REVERT_INITAL_STATE";
 export let revertInitialState = () => ({type: REVERT_INITIAL_STATE});
@@ -54,14 +64,39 @@ let resetEditablePoisAction = (state, action) => {
 }
 resetEditablePois.toString = () => RESET_EDITABLE_POIS;
 
+const UPDATE_POI_BEING_EDITIED = "UPDATE_POI_BEING_EDITIED";
+export let updatePoiBeingEdited = (payload) => ({type: UPDATE_POI_BEING_EDITIED, payload});
+let updatePoiBeingEditedAction = (state, action) => {
+    return ({ ...state, poiBeingEdited: Object.assign({}, action.payload) });
+}
+updatePoiBeingEdited.toString = () => UPDATE_POI_BEING_EDITIED;
+
+const UPDATE_EDITABLE_WALKS = "UPDATE_EDITABLE_WALKS";
+export let updateEditableWalks = (payload) => ({type: UPDATE_EDITABLE_WALKS, payload});
+let updateEditableWalksAction = (state, action) => {
+    return ({ ...state, editableWalks: action.payload });
+}
+updateEditableWalks.toString = () => UPDATE_EDITABLE_WALKS;
+
+const UPDATE_CURRENT_LOCATION = "UPDATE_CURRENT_LOCATION";
+export let updateCurrentLocation = (payload) => ({type: UPDATE_CURRENT_LOCATION, payload});
+let updateCurrentLocationAction = (state, action) => {
+    return ({ ...state, currentLocation: action.payload });
+}
+updateCurrentLocation.toString = () => UPDATE_CURRENT_LOCATION;
+
 let reducerHandlers = {
-    [updateInitialState]: updateInitialStateAction,
+    [updateUserObject]: updateUserObjectAction,
     [updateMenuViewable]: updateMenuViewableAction,
     [updateWalkBeingEdited]: updateWalkBeingEditedAction,
     [addEditablePoi]: addEditablePoiAction,
     [revertInitialState]: revertInitialStateAction,
     [resetEditablePois]: resetEditablePoisAction,
     [updateEditablePois]: updateEditablePoisAction,
+    [updatePoiBeingEdited]: updatePoiBeingEditedAction,
+    [updateProfileBeingViewed]: updateProfileBeingViewedAction,
+    [updateEditableWalks]: updateEditableWalksAction,
+    [updateCurrentLocation]: updateCurrentLocationAction,
 };
 
 export default reducerHandlers;

@@ -5,12 +5,14 @@ import {
     postWalkThumbnail,
     postWalkVideo,
     postWalkAudio,
+    getWalkPois,
 } from './fetch-data';
 import {
     updateWalkBeingEdited,
+    updateEditablePois,
 } from './reducer-handlers';
 
-let EditWalkDumb = ({ walkBeingEdited, updateWalkBeingEdited }) =>
+let EditWalkDumb = ({ walkBeingEdited, updateWalkBeingEdited, updateEditablePois }) =>
     <div className="edit-walk">
         <h2 className="self-center"><strong>Step 2:</strong> Introduce Your Walk!</h2>
         <div className="walk-thumbnail-container" >
@@ -24,12 +26,19 @@ let EditWalkDumb = ({ walkBeingEdited, updateWalkBeingEdited }) =>
                         encType="multipart/form-data" />
                 <button type="submit">Submit</button>
             </form>
-        <h4>Title</h4>
-        <h2>{walkBeingEdited.title}</h2>
-        <button>Edit</button>
+        <h4>Title: {walkBeingEdited.title}</h4>
+        <form className="edit-walk" onSubmit={(event) => 
+                submitWalkTitle(event, walkBeingEdited.id, updateWalkBeingEdited)}>
+            <input type="text" name="title" />
+            <button>Submit</button>
+        </form>
         <h4>Description</h4>
         <p>{walkBeingEdited.description}</p>
-        <button>Edit</button>
+        <form className="edit-walk" onSubmit={(event) => 
+                submitWalkDescription(event, walkBeingEdited.id, updateWalkBeingEdited)}>
+            <textarea name="description" />
+            <button>Submit</button>
+        </form>
         {
             isThereVideo(walkBeingEdited)
         }
@@ -52,9 +61,23 @@ let EditWalkDumb = ({ walkBeingEdited, updateWalkBeingEdited }) =>
             </form>
         <div>
             <Link to="/previewwalk">Preview</Link>
-            <Link to="/addpois">Add POIs</Link>
+            <Link to="/addpois" onClick={() => getPois(updateEditablePois, walkBeingEdited.id)}>Add POIs</Link>
         </div>
     </div>
+
+let getPois = async (updateEditablePois, walkId) => {
+    let result = await getWalkPois(walkId);
+    updateEditablePois(result);
+}   
+
+let submitWalkTitle = async (event, id, updateWalkBeingEdited) => {
+    event.preventDefault();
+}
+
+let submitWalkDescription = async (event, id, updateWalkBeingEdited) => {
+    event.preventDefault();
+}
+
 let submitWalkThumbnail = async (event, walk, updateWalkBeingEdited) => {
     event.preventDefault();
     let walkThumbnail = event.target['walk-thumbnail'].files[0];
@@ -79,7 +102,7 @@ let submitWalkAudio = async (event, walk, updateWalkBeingEdited) => {
     updateWalkBeingEdited(newWalk);
 }
 
-let isThereVideo = (walkBeingEdited) => {
+export let isThereVideo = (walkBeingEdited) => {
     if (walkBeingEdited.video) {
         return(
             <video width="360" height="360" controls>
@@ -88,11 +111,12 @@ let isThereVideo = (walkBeingEdited) => {
     }
 }
 
-let isThereAudio = (walkBeingEdited) => {
+export let isThereAudio = (walkBeingEdited) => {
     if (walkBeingEdited.video) {
         return(
             <audio controls className="audio" >
-                <source src={'http://localhost:5000/' + walkBeingEdited.audio} type="audio/mpeg" />
+                <source src={'http://localhost:5000/' + walkBeingEdited.audio} 
+                    type="audio/mpeg" />
             </audio>)
     }
 }
@@ -105,6 +129,7 @@ let mapStateToProps = (state) =>
 let mapDispatchToProps = (dispatch) =>
     ({ 
         updateWalkBeingEdited: (walk) => dispatch(updateWalkBeingEdited(walk)),
+        updateEditablePois: (pois) => dispatch(updateEditablePois(pois)),
     })
 
 let EditWalk = connect(

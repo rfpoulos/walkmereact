@@ -55,7 +55,7 @@
 }
 
 input {
-  width: 80%;
+  max-width: 360px;
   border-radius: 2px;
   border: solid 1px #ccc;
   padding: 0.4em;
@@ -177,7 +177,6 @@ textarea {
 
 .display-flex {
   display: flex;
-  width: 89%;
 }
 
 .profile {
@@ -202,6 +201,14 @@ textarea {
   max-height: 130px;
 }
 
+.walks {
+  display:flex;
+  height: 130px;
+  width: 350px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  margin-bottom: 10px;
+}
+
 .editable-poi {
   display:flex;
   height: 130px;
@@ -222,7 +229,7 @@ textarea {
 }
 
 .low-margin {
-  margin: .2em;
+  margin: 0;
 }
 
 .arrow {
@@ -239,6 +246,69 @@ textarea {
   display: flex;
   justify-content: space-between;
   width: 340px;
+}
+
+.full-width {
+  min-width: 360px;
+}
+
+.half-width {
+  max-width: 165px;
+}
+
+.delete-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 180px;
+}
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 215px;
+}
+
+.delete {
+  width: 30px;
+  height: 30px;
+  margin: .2em
+}
+
+.poi-info {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 190px;
+  padding: .2em;
+}
+
+.poi-images {
+  width: 25px;
+  height: 25px;
+}
+
+.walk-cards {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.walk-icons {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  margin-right: .2em;
+}
+
+.icon-info {
+  display: flex;
+  align-items: center;
+}
+
+.walk-buttons {
+  display: flex;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 600px) {

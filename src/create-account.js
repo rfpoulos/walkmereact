@@ -5,11 +5,11 @@ import {
         fetchCreateAccount, 
         fetchSignIn,
         } from './fetch-data';
-import { updateInitialState } from './reducer-handlers';
+import { updateUserObject } from './reducer-handlers';
 
-let CreateAccountDumb = ({ updateInitialState, history }) =>
+let CreateAccountDumb = ({ updateUserObject, history }) =>
     <div className="create-account-container">
-        <form className="create-account" onSubmit={(event) => createNewAccount(event, history, updateInitialState)}>
+        <form className="create-account" onSubmit={(event) => createNewAccount(event, history, updateUserObject)}>
             <input type="email" placeholder="email" name="email" />
             <input type="text" placeholder="username" name="username" />
             <input type="password" placeholder="password" name="password" />
@@ -18,7 +18,7 @@ let CreateAccountDumb = ({ updateInitialState, history }) =>
         </form>
     </div>
 
-let createNewAccount = (event, history, updateInitialState) => {
+let createNewAccount = (event, history, updateUserObject) => {
     event.preventDefault();
     let createFetchBody = {
         email: event.target.email.value,
@@ -34,7 +34,7 @@ let createNewAccount = (event, history, updateInitialState) => {
             }
             fetchSignIn(signInFetchBody)
             .then( data => {
-                updateInitialState(data);
+                updateUserObject(data);
                 history.push('/walks');
             })
         }
@@ -47,7 +47,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch, { history }) =>
     ({
-        updateInitialState: (res) => dispatch(updateInitialState(res)),
+        updateUserObject: (res) => dispatch(updateUserObject(res)),
         history
     })
 

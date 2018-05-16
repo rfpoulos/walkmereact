@@ -8,7 +8,7 @@ import {
   Marker,
   InfoWindow,
 } from 'react-google-maps';
-require('dotenv').config();
+import { googleApiKey } from './variables';
 
 let MapDumb = ({ 
                 zoom, 
@@ -44,7 +44,7 @@ let MapDumb = ({
 let Map = compose(
   withProps({
     googleMapURL: `https://maps.googleapis.com/maps/api/js?
-                    key=${process.env.GOOGLE_API_KEY}
+                    key=${googleApiKey}
                     =3.exp&libraries=geometry,drawing,places`,
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `360px` }} />,

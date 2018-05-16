@@ -4,26 +4,29 @@ import { connect } from 'react-redux';
 import dottedLine from './images/Dotted-line.png';
 import uparrow from './images/angle-double-up.svg';
 import downarrow from './images/angle-double-down.svg';
-import { updateEditablePois } from './reducer-handlers';
-import { updatePoiPositions } from './fetch-data';
+import times from './images/times.svg'
+import { 
+        updateEditablePois,
+        updatePoiBeingEdited,
+     } from './reducer-handlers';
+import { 
+        updatePoiPositions,
+        deletePoi,    
+    } from './fetch-data';
+import PoiCard from './dumb-poi-card';
 
-let EditablePoisDumb = ({ editablePois, beingEditedPoi, updateEditablePois }) =>
+let EditablePoisDumb = ({ 
+                            editablePois, 
+                            poiBeingEdited, 
+                            updateEditablePois,
+                            updatePoiBeingEdited,
+                        }) =>
     <div>
     {
         editablePois.map(poi =>
-            <div key={poi.position}>
+            <div key={poi.id}>
                 <div className="poi-div">
-                    <div className="editable-poi">
-                        <div className="poi-thumbnail">
-                            <img className="thumbnail" src={'http://localhost:5000/' + poi.thumbnail} alt="POI Thumbnail" />
-                        </div>
-                        <div>
-                            <h2 className="low-margin">{poi.title}</h2>
-                            <h6 className="low-margin">{poi.address.split(",", 1)}</h6>
-                            <h6 className="low-margin">{poi.address.split(",").splice(1)}</h6>
-                            <h6 className="low-margin">{`{${parseFloat(poi.lat).toPrecision(10)}, ${parseFloat(poi.long).toPrecision(10)}}`}</h6>
-                        </div>
-                    </div>
+                    <PoiCard poi={poi} deleteButton={() => deleteButton(poi.id, updateEditablePois)}/>
                     <div className="arrows">
                     {
                         shouldUpArrowDisplay(poi, editablePois, updateEditablePois)
@@ -34,7 +37,8 @@ let EditablePoisDumb = ({ editablePois, beingEditedPoi, updateEditablePois }) =>
                     </div>
                 </div>
                 <div className="column-center">
-                    <Link to={`/editpoi/${poi.id}`}>Edit this POI</Link>
+                    <Link onClick={() => updatePoiBeingEdited(poi)}
+                        to={`/editpoi/${poi.id}`}>Edit this POI</Link>
                     <img className="dotted-line" src={dottedLine} alt="" />
                 </div>
             </div>
@@ -43,18 +47,22 @@ let EditablePoisDumb = ({ editablePois, beingEditedPoi, updateEditablePois }) =>
     </div>
 
 let shouldUpArrowDisplay = (poi, editablePois, updateEditablePois) => {
-    if (poi.position !== 0) {
+    if (poi.id !== editablePois[0].id) {
         return <img className="arrow" src={uparrow} alt="Up Arrow"
             onClick={() => moveUp(poi, editablePois, updateEditablePois)} />
     }
 }
 
 let shouldDownArrowDisplay = (poi, editablePois, updateEditablePois) => {
-    if (poi.position !== editablePois.length - 1) {
+    if (poi.id !== editablePois[editablePois.length - 1].id) {
         return <img className="arrow" src={downarrow} alt="Down Arrow"
         onClick={() => moveDown(poi, editablePois, updateEditablePois)} />
     }
 }
+
+let deleteButton = (id, updateEditablePois) =>
+    <img className="delete" src={times} alt="Delete"
+        onClick={() => removePoi(id, updateEditablePois)} />
 
 let moveUp = (poi, editablePois, updateEditablePois) => {
     let pois = [];
@@ -76,7 +84,7 @@ let moveUp = (poi, editablePois, updateEditablePois) => {
     secondArray.map(element => 
         newEditablePois[element.position] = element);
     updatePoiPositions(pois)
-    .then(data => updateEditablePois(newEditablePois));
+    .then(data => updateEditablePois(data));
 }
 
 let moveDown = (poi, editablePois, updateEditablePois) => {
@@ -99,18 +107,24 @@ let moveDown = (poi, editablePois, updateEditablePois) => {
     secondArray.map(element => 
         newEditablePois[element.position] = element);
     updatePoiPositions(pois)
-    .then(data => updateEditablePois(newEditablePois));
+    .then(data => updateEditablePois(data));
+}
+
+let removePoi = (id, updateEditablePois) => {
+    deletePoi(id)
+    .then(data => updateEditablePois(data));
 }
 
 let mapStateToProps = (state) =>
     ({
         editablePois: state.editablePois,
-        beingEditedPoi: state.beingEditedPoi,
+        poiBeingEdited: state.poiBeingEdited,
     })
 
 let mapDispatchToProps = (dispatch) =>
     ({ 
         updateEditablePois: (payload) => dispatch(updateEditablePois(payload)),
+        updatePoiBeingEdited: (payload) => dispatch(updatePoiBeingEdited(payload)),
     })
 
 let EditablePois = connect(
