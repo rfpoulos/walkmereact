@@ -16,6 +16,8 @@ import {
     updateEditablePois,
 } from './reducer-handlers';
 
+import { server } from './variables';
+
 let EditPoiDumb = ({ poiBeingEdited, updatePoiBeingEdited, updateEditablePois }) =>
     <div className="edit-walk">
         <h2 className="self-center">
@@ -23,7 +25,7 @@ let EditPoiDumb = ({ poiBeingEdited, updatePoiBeingEdited, updateEditablePois })
         </h2>
         <div className="walk-thumbnail-container" >
             <img className="thumbnail" alt="POI Thumbnail"
-                 src={'http://localhost:5000/' + poiBeingEdited.thumbnail} />
+                 src={server + '/' + poiBeingEdited.thumbnail} />
         </div>
         <h4>Add/Change Poi Thumbnail</h4>
             <form className="edit-walk" onSubmit ={(event) => 
@@ -81,11 +83,10 @@ let EditPoiDumb = ({ poiBeingEdited, updatePoiBeingEdited, updateEditablePois })
                 <button type="submit">Submit</button>
             </form>
         <div>
-            <Link to="/previewpoi">Preview Poi</Link>
             <Link onClick={() => {
                 getWalkPois(poiBeingEdited.walkid)
                 .then(data => updateEditablePois(data))
-            }} to="/addpois">Return to Add Pois</Link>
+            }} to="/addpois"><button>Return to Add Pois</button></Link>
         </div>
     </div>
 
@@ -93,7 +94,7 @@ let isThereNextAudio = (poiBeingEdited) => {
     if (poiBeingEdited['next_audio']) {
         return(
             <audio controls className="audio" >
-                <source src={'http://localhost:5000/' + poiBeingEdited.next_audio} type="audio/mpeg" />
+                <source src={server + '/' + poiBeingEdited.next_audio} type="audio/mpeg" />
             </audio>)
     }
 }

@@ -18,6 +18,9 @@ import AddPoiForm from './add-poi-form';
 import EditPoi from './edit-poi';
 import YourWalks from './your-walks';
 import Location from './location';
+import ViewWalk from './view-walk';
+import ViewPoi from './view-poi';
+import NextAudio from './next-audio';
 
 let App = () =>
   <Router>
@@ -26,6 +29,9 @@ let App = () =>
         <Header />
         <DropDownMenu />
         <Switch>
+          <Route path="/nextaudio" component={ NextAudio } />
+          <Route path="/viewpoi" component={ ViewPoi } />
+          <Route path="/viewwalk" component={ ViewWalk } />
           <Route path="/yourwalks" component= { YourWalks } />
           <Route path="/editpoi/:id" component={ EditPoi } />
           <Route path="/addpois" component={ AddPoiForm } />

@@ -5,7 +5,7 @@ import marker from './images/map-marker-alt.svg';
 import length from './images/walking.svg';
 import { connect } from 'react-redux';
 
-let WalkCardDumb = ({ walk, currentLocation }) =>
+let WalkCardDumb = ({ walk, searchLocation }) =>
     <div className="walks">
         <div className="poi-thumbnail">
             <img className="thumbnail" 
@@ -14,37 +14,37 @@ let WalkCardDumb = ({ walk, currentLocation }) =>
             />
         </div>
         <div className="poi-info">
-            <div className="title-container">
-                <h2 className="low-margin">{walk.title}</h2>
-                {
-                    shouldDistanceShow(walk.lat, walk.long, currentLocation)
-                }
-            </div>
+            <h2 className="low-margin title-card">{walk.title}</h2>
             <div className="icon-info">
                 <div className="walk-icons">
                     <img className="thumbnail" 
                     src={server + '/' + walk.guidethumbnail} alt="Guide" />
                 </div>
-                <p>{walk.username}</p>
+                <p className="low-margin">{walk.username}</p>
             </div>
             <div className="icon-info">
                 <img className="walk-icons" src={marker} alt="marker" />
                 <h6 className="low-margin">{walk.address}</h6>
             </div>
-            <div className="icon-info">
-                <img className="walk-icons" src={length} alt="length" />
-                <p>{Math.round(walk.length / 16.09344) / 100 + ' mi'}</p>
+            <div className="title-container">
+                <div className="icon-info">
+                    <img className="walk-icons" src={length} alt="length" />
+                    <p className="low-margin">{Math.round(walk.length / 16.09344) / 100 + ' mi'}</p>
+                </div>
+                {
+                    shouldDistanceShow(walk.lat, walk.long, searchLocation)
+                }
             </div>
         </div>
     </div>
 
-let shouldDistanceShow = (lat, long, currentLocation) => {
-    if (currentLocation) {
+let shouldDistanceShow = (lat, long, searchLocation) => {
+    if (searchLocation) {
         return (
             <div className="icon-info">
                 <img className="walk-icons" src={arrow} alt="arrow" />
-                <p>{
-                    Math.round(calculateDistance(lat, currentLocation.lat, long, currentLocation.long) / 10) / 100 + ' mi'
+                <p className="low-margin">{
+                    Math.round(calculateDistance(lat, searchLocation.lat, long, searchLocation.long) / 10) / 100 + ' mi'
                 }</p>
             </div>)
     }
@@ -59,7 +59,7 @@ let calculateDistance = (lat1, lat2, long1, long2) => {
         Math.sin(dLong / 2) * Math.sin(dLong / 2);
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     let d = R * c;
-    return d;
+    return d * 0.62137119;
 }
 
 let rad = (x) => {
@@ -69,7 +69,7 @@ let rad = (x) => {
 let mapStateToProps = (state, { walk }) => {
     return {
         walk,
-        currentLocation: state.currentLocation,
+        searchLocation: state.searchLocation,
      };
 }
 

@@ -20,7 +20,6 @@ let newWalkLength = (directions, walkid) => {
     let legs = directions.routes[0].legs
     let length = 0;
     legs.forEach(leg => length += leg.distance.value);
-    console.log(length, walkid);
     updateWalkLength({ length, walkid });
 }
 
@@ -30,7 +29,7 @@ let MapWithADirectionsRenderer = compose(
                     key=${googleApiKey}
                     &v=3.exp&libraries=geometry,drawing,places`,
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
+    containerElement: <div style={{ height: `400px`, width: '360px' }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withScriptjs,
@@ -60,7 +59,9 @@ let MapWithADirectionsRenderer = compose(
       });
     },
     componentDidUpdate(prevProps) {
-      if (JSON.stringify(prevProps.displayedPois) !== JSON.stringify(this.props.displayedPois)) {
+      if ((JSON.stringify(prevProps.displayedPois) !== 
+          JSON.stringify(this.props.displayedPois) &&
+          this.props.editMode)) {
         const DirectionsService = new window.google.maps.DirectionsService();
   
         DirectionsService.route({

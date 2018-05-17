@@ -23,7 +23,7 @@ let DropDownMenuDumb = ({
                 <div className="menu-picture">
                     <img className="thumbnail" alt="Hamburger Menu" src={server + '/' + userObject.thumbnail} />
                 </div>
-                <h4>{userObject.username}</h4>
+                <h4 className="low-margin">{userObject.username}</h4>
             </div>
             <ul className="menu-nav" onClick={() => updateMenuViewable()}>
                 <li>

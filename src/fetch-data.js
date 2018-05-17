@@ -1,4 +1,4 @@
-import { server, googleApiKey } from './variables'; 
+import { server } from './variables'; 
 
 let setTokenInLocalStorage = (userInfo) => {
     let token = userInfo.token;
@@ -231,10 +231,20 @@ export let postPoiVideo = (id, data) => {
     }).then(res => res.text());
 }
 
+export let getWalk = (id) =>
+    fetch(server + '/getwalk/' + id, {
+        method: 'GET',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
 export let getWalkPois = (walkId) =>
     fetch(server + '/getwalkpois/' + walkId, {
         method: 'GET',
         headers: new Headers ({
+            "Content-Type": "application/json",
             "authorization": localStorage.getItem('token')
         })
     }).then(res => res.json())
@@ -247,8 +257,8 @@ export let getContributedWalks = () =>
         })
     }).then(res => res.json())
 
-export let updateWalkLength = (input) =>{
-    return fetch(server + '/updatewalklength', {
+export let updateWalkLength = (input) =>
+    fetch(server + '/updatewalklength', {
         method: 'POST',
         body: JSON.stringify(input),
         headers: new Headers ({
@@ -256,7 +266,6 @@ export let updateWalkLength = (input) =>{
             "authorization": localStorage.getItem('token')
         })
     }).then(res => res.text())
-}
 
 export let deleteWalk = (walkId) =>
     fetch(server + '/deletewalk/' + walkId, {
@@ -266,3 +275,42 @@ export let deleteWalk = (walkId) =>
             "authorization": localStorage.getItem('token')
         })
     }).then(res => res.json());
+
+export let updatePublicStatus = (walkId) => 
+    fetch(server + '/updatepublicstatus/' + walkId, {
+        method: 'PUT',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getGuideOrTitle = (search) =>
+    fetch(server + '/getguideortitle/' + search, {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getResultClick = (result) =>
+    fetch(server + '/getresultclick/' + result, {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getResultsWithinDistance = ({ lat, long, miles, limit, sortby }) =>
+    fetch(`${server}/getresultswithinfistance/${lat}/${long}/${miles}/${limit}/${sortby}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())

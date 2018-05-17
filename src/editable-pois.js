@@ -38,7 +38,7 @@ let EditablePoisDumb = ({
                 </div>
                 <div className="column-center">
                     <Link onClick={() => updatePoiBeingEdited(poi)}
-                        to={`/editpoi/${poi.id}`}>Edit this POI</Link>
+                        to={`/editpoi/${poi.id}`}><button>Edit this POI</button></Link>
                     <img className="dotted-line" src={dottedLine} alt="" />
                 </div>
             </div>

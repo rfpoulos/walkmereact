@@ -72,7 +72,7 @@ h2, .nav {
   text-decoration: none;
   font-family: 'Helvetica Neue', 'san-serif';
   font-weight: 200;
-  font-size: 1.4em;
+  font-size: 1.2em;
 }
 
 button {
@@ -82,6 +82,7 @@ button {
   border-color: white;
   background: #f1f1f1;
   padding: .5em;
+  margin: .5em;
   font-family: 'Helvetica Neue';
   font-size: 1em;
   border-radius: 5px;
@@ -151,6 +152,8 @@ textarea {
   flex-flow: row wrap;
   justify-content: space-around;
   width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .menu-nav > li {
@@ -167,7 +170,7 @@ textarea {
 .profile-container {
   display: flex;
   flex-direction: column;
-  padding-left: 40px;
+  padding-left: 1em;
 }
 
 .hamburger {
@@ -183,7 +186,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 360px;
+  width: 100%;
 }
 
 .profile-photo {
@@ -206,7 +209,7 @@ textarea {
   height: 130px;
   width: 350px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  margin-bottom: 10px;
+  margin: 10px 0 10px 0;
 }
 
 .editable-poi {
@@ -228,8 +231,17 @@ textarea {
   align-items: center;
 }
 
+.center-text {
+  text-align: center;
+}
+
+.title-card {
+  align-self: center;
+}
+
 .low-margin {
   margin: 0;
+  display: flex;
 }
 
 .arrow {
@@ -259,8 +271,7 @@ textarea {
 .delete-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 180px;
+  width: 185px;
 }
 
 .title-container {
@@ -281,6 +292,7 @@ textarea {
   flex-direction: column;
   flex-basis: 190px;
   padding: .2em;
+  justify-content: space-between;
 }
 
 .poi-images {
@@ -309,6 +321,25 @@ textarea {
 .walk-buttons {
   display: flex;
   justify-content: center;
+}
+
+.search-types {
+  display: flex;
+  justify-content: space-around;
+  width: 360px;
+}
+
+select {
+  margin: .5em;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+}
+
+.padding {
+  padding-left: 1em;
 }
 
 @media only screen and (max-width: 600px) {

@@ -26,7 +26,7 @@ let PoiSearchBoxDumb = ({
                             addEditablePoi, editablePois.length, 
                             setPoiForm, onSubmitForm)
                     }>
-            <input value={poiForm.title} onChange={(event) => 
+            <input value={poiForm.title} maxlength="30" onChange={(event) => 
                 setPoiForm({...poiForm, title: event.target.value})} className="full-width" type="text" name="title" placeholder="Title" />
             <div>
                 <StandaloneSearchBox
@@ -64,7 +64,7 @@ let PoiSearchBoxDumb = ({
 
 let shouldMapShow = (editablePois) => {
     if (editablePois[0]) {
-        return <Map displayedPois={editablePois} />
+        return <Map displayedPois={editablePois} editMode="true" />
     }
 }
 

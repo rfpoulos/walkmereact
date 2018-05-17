@@ -11,13 +11,14 @@ import {
     updateWalkBeingEdited,
     updateEditablePois,
 } from './reducer-handlers';
+import { server } from './variables';
 
 let EditWalkDumb = ({ walkBeingEdited, updateWalkBeingEdited, updateEditablePois }) =>
     <div className="edit-walk">
         <h2 className="self-center"><strong>Step 2:</strong> Introduce Your Walk!</h2>
         <div className="walk-thumbnail-container" >
             <img className="thumbnail" alt="Walk Thumbnail"
-                 src={'http://localhost:5000/' + walkBeingEdited.thumbnail} />
+                 src={server + '/' + walkBeingEdited.thumbnail} />
         </div>
         <h4>Add/Change Walk Thumbnail</h4>
             <form className="edit-walk" onSubmit ={(event) => submitWalkThumbnail(event, walkBeingEdited, updateWalkBeingEdited)}>
@@ -60,8 +61,10 @@ let EditWalkDumb = ({ walkBeingEdited, updateWalkBeingEdited, updateEditablePois
                 <button type="submit">Submit</button>
             </form>
         <div>
-            <Link to="/previewwalk">Preview</Link>
-            <Link to="/addpois" onClick={() => getPois(updateEditablePois, walkBeingEdited.id)}>Add POIs</Link>
+            <Link to="/previewwalk"><button>Preview</button></Link>
+            <Link to="/addpois" 
+                onClick={() => getPois(updateEditablePois, walkBeingEdited.id)}
+            ><button>Add POIs</button></Link>
         </div>
     </div>
 
@@ -106,16 +109,16 @@ export let isThereVideo = (walkBeingEdited) => {
     if (walkBeingEdited.video) {
         return(
             <video width="360" height="360" controls>
-                <source src={'http://localhost:5000/' + walkBeingEdited.video} type="video/mp4" />
+                <source src={server + "/" + walkBeingEdited.video} type="video/mp4" />
             </video>)
     }
 }
 
 export let isThereAudio = (walkBeingEdited) => {
-    if (walkBeingEdited.video) {
+    if (walkBeingEdited.audio) {
         return(
             <audio controls className="audio" >
-                <source src={'http://localhost:5000/' + walkBeingEdited.audio} 
+                <source src={server + "/" + walkBeingEdited.audio} 
                     type="audio/mpeg" />
             </audio>)
     }

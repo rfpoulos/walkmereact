@@ -5,29 +5,53 @@ import {
         updateWalkBeingEdited,
         updateEditableWalks,
     } from './reducer-handlers';
-import { deleteWalk } from './fetch-data';
+import { deleteWalk, updatePublicStatus } from './fetch-data';
 
 let YourWalksDumb = ({ editableWalks, updateWalkBeingEdited, history, updateEditableWalks }) =>
-    <div className="walk-cards">
-        {
-            editableWalks.map(walk =>
-                <div key={walk.id}> 
-                    <WalkCard walk={walk}/>
-                    <div className="walk-buttons">
-                        <button onClick={() => editWalk(updateWalkBeingEdited, history, walk)}>Edit</button>
-                        <button onClick={() => removeWalk(updateEditableWalks, walk.id)}>Delete</button>
-                        <button>Make Public</button>
-                    </div>
-                </div>)
-        }
+    <div>
+        <h2 className="center-text">Your Walks</h2>
+        <div className="walk-cards">
+            {
+                editableWalks.map(walk =>
+                    <div key={walk.id}> 
+                        <WalkCard walk={walk}/>
+                        <div className="walk-buttons">
+                            <button onClick={() => editWalk(updateWalkBeingEdited, history, walk)}>Edit</button>
+                            <button onClick={() => removeWalk(updateEditableWalks, walk.id)}>Delete</button>
+                            {
+                                makePublicOrPrivate(updateWalkBeingEdited, walk, updateEditableWalks, history)
+                            }
+                        </div>
+                    </div>)
+            }
+        </div>
     </div>
+
+export let makePublicOrPrivate = (updateWalkBeingEdited, walk, updateEditableWalks, history) => {
+    if (walk.public) {
+        return <button onClick={() => changePublicStatus(updateWalkBeingEdited, updateEditableWalks, walk.id)}
+                >Make Private</button>
+    } else {
+        return <button onClick={() => {
+            changePublicStatus(updateWalkBeingEdited, updateEditableWalks, walk.id);
+            history.push('/yourwalks')
+        }}
+                >Make Public</button>
+    }
+}
+
+let changePublicStatus = async (updateWalkBeingEdited, updateEditableWalks, walkId) => {
+    let results = await updatePublicStatus(walkId);
+    updateEditableWalks(results);
+    updateWalkBeingEdited(results.find(element => element.id === walkId));
+}
 
 let editWalk = (updateWalkBeingEdited, history, walk) => {
     updateWalkBeingEdited(walk);
     history.push('/editwalk/' + walk.id)
 }
 
-let removeWalk = async (updateEditableWalks, walkId) => {
+let removeWalk = async (updateWalkBeingEdited, updateEditableWalks, walkId) => {
     let result = await deleteWalk(walkId);
     updateEditableWalks(result);
 }

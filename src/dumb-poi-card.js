@@ -13,7 +13,7 @@ let DumbPoiCard = ({poi, deleteButton}) =>
         </div>
         <div className="poi-info">
             <div className="delete-container">
-                <h2 className="low-margin">{poi.title}</h2>
+                <h2 className="low-margin title-card">{poi.title}</h2>
                 {
                     deleteButton()
                 }
@@ -40,7 +40,7 @@ let shouldMicrophoneDisplay = (poi) => {
 }
 
 let shouldVideoDisplay = (poi) => {
-    if (poi.audio || poi.next_audio) {
+    if (poi.video) {
         return <img className="poi-images" src={video} alt="Video Available" />
     }
 }
