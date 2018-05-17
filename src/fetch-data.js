@@ -1,3 +1,5 @@
+import { server } from './variables'; 
+
 let setTokenInLocalStorage = (userInfo) => {
     let token = userInfo.token;
     localStorage.setItem('token', token);
@@ -5,11 +7,11 @@ let setTokenInLocalStorage = (userInfo) => {
 }
 
 export let fetchCreateAccount = (input) =>
-    fetch('http://localhost:5000/createaccount', {
+    fetch(server + '/createaccount', {
         method: "POST",
         body: JSON.stringify(input),
         headers: new Headers ({
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
             })
     })
     .then(res => res.text());
@@ -17,7 +19,7 @@ export let fetchCreateAccount = (input) =>
 export let postProfilePicture = (data, token) => {
     let formData = new FormData();
     formData.append('thumbnail', data);
-    return fetch('http://localhost:5000/postprofilepic', {
+    return fetch(server + '/postprofilepic', {
         method: 'POST',
         body: formData,
         mode: 'cors',
@@ -27,8 +29,30 @@ export let postProfilePicture = (data, token) => {
     }).then(res => res.text());
 }
 
+export let postUserLocation = (input) =>
+    fetch(server + '/userlocation', {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token') 
+            })
+    })
+    .then(res => res.json());
+
+export let postUserAboutMe = (input) =>
+    fetch(server + '/useraboutme', {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token') 
+            })
+    })
+    .then(res => res.json());
+
 export let fetchSignIn = (input) =>
-    fetch('http://localhost:5000/signin', {
+    fetch(server + '/signin', {
         method: "POST",
         body: JSON.stringify(input),
         headers: new Headers ({
@@ -39,7 +63,7 @@ export let fetchSignIn = (input) =>
     .then(res => setTokenInLocalStorage(res));
 
 export let fetchUserObject = (token) =>
-fetch('http://localhost:5000/user', {
+fetch(server + '/user', {
     method: "GET",
     headers: new Headers ({
         "Content-Type": "application/json",
@@ -49,7 +73,7 @@ fetch('http://localhost:5000/user', {
     .then(res => res.json())
 
 export let postInitialWalk = (input) =>
-    fetch('http://localhost:5000/postwalk', {
+    fetch(server + '/postwalk', {
         method: "POST",
         body: JSON.stringify(input),
         headers: new Headers ({
@@ -63,7 +87,7 @@ export let postWalkThumbnail = (id, data) => {
     let formData = new FormData();
     formData.append('walk-thumbnail', data);
     formData.append('id', id)
-    return fetch('http://localhost:5000/postwalkthumbnail', {
+    return fetch(server + '/postwalkthumbnail', {
         method: 'POST',
         body: formData,
         mode: 'cors',
@@ -77,7 +101,7 @@ export let postWalkAudio = (id, data) => {
     let formData = new FormData();
     formData.append('walk-audio', data);
     formData.append('id', id)
-    return fetch('http://localhost:5000/postwalkaudio', {
+    return fetch(server + '/postwalkaudio', {
         method: 'POST',
         body: formData,
         mode: 'cors',
@@ -91,7 +115,7 @@ export let postWalkVideo = (id, data) => {
     let formData = new FormData();
     formData.append('walk-video', data);
     formData.append('id', id)
-    return fetch('http://localhost:5000/postwalkvideo', {
+    return fetch(server + '/postwalkvideo', {
         method: 'POST',
         body: formData,
         mode: 'cors',
@@ -102,7 +126,7 @@ export let postWalkVideo = (id, data) => {
 }
 
 export let postPoi = (input) =>
-    fetch('http://localhost:5000/postpoi', {
+    fetch(server + '/postpoi', {
         method: "POST",
         body: JSON.stringify(input),
         headers: new Headers ({
@@ -113,20 +137,180 @@ export let postPoi = (input) =>
     .then(res => res.json());
 
 export let updatePoiPositions = (pois) =>
-    fetch('http://localhost:5000/updatepoipositions', {
+    fetch(server + '/updatepoipositions', {
         method: "POST",
         body: JSON.stringify(pois),
         headers: new Headers ({
             "Content-Type": "application/json",
             "authorization": localStorage.getItem('token')
         })
-    }).then(res => res.text());
+    }).then(res => res.json());
 
-export let fetchUserLocation = () =>
-    fetch(`https://www.googleapis.com/
-            geolocation/v1/geolocate?
-            key=AIzaSyBfiseqKd83EqCDMVV4nKwH_7-js_Nv7VU`,
-        {
-            method: 'POST'
+export let deletePoi = (id) =>
+    fetch(server + '/deletepoi/' + id, {
+        method: "DELETE",
+        mode: 'cors',
+        headers: new Headers ({
+            "authorization": localStorage.getItem('token')
         })
-        .then(res => res.json())
+    }).then(res => res.json());
+
+export let postPoiDescription = (input) =>
+    fetch(server + '/poidescription', {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json());
+
+export let postPoiTitle = (input) =>
+    fetch(server + '/poititle', {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json());
+
+export let postPoiThumbnail = (id, data) => {
+    let formData = new FormData();
+    formData.append('poi-thumbnail', data);
+    formData.append('id', id)
+    return fetch(server + '/postpoithumbnail', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": localStorage.getItem('token') 
+            })
+    }).then(res => res.text());
+}
+
+export let postPoiAudio = (id, data) => {
+    let formData = new FormData();
+    formData.append('poi-audio', data);
+    formData.append('id', id)
+    return fetch(server + '/postpoiaudio', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": localStorage.getItem('token') 
+            })
+    }).then(res => res.text());
+}
+
+export let postPoiNextAudio = (id, data) => {
+    let formData = new FormData();
+    formData.append('poi-next-audio', data);
+    formData.append('id', id)
+    return fetch(server + '/postpoinextaudio', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": localStorage.getItem('token') 
+            })
+    }).then(res => res.text());
+}
+
+export let postPoiVideo = (id, data) => {
+    let formData = new FormData();
+    formData.append('poi-video', data);
+    formData.append('id', id)
+    return fetch(server + '/postpoivideo', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        headers: new Headers ({
+        "authorization": localStorage.getItem('token') 
+            })
+    }).then(res => res.text());
+}
+
+export let getWalk = (id) =>
+    fetch(server + '/getwalk/' + id, {
+        method: 'GET',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getWalkPois = (walkId) =>
+    fetch(server + '/getwalkpois/' + walkId, {
+        method: 'GET',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getContributedWalks = () =>
+    fetch(server + '/getcontributedwalks', {
+        method: 'GET',
+        headers: new Headers ({
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let updateWalkLength = (input) =>
+    fetch(server + '/updatewalklength', {
+        method: 'POST',
+        body: JSON.stringify(input),
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.text())
+
+export let deleteWalk = (walkId) =>
+    fetch(server + '/deletewalk/' + walkId, {
+        method: "DELETE",
+        mode: 'cors',
+        headers: new Headers ({
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json());
+
+export let updatePublicStatus = (walkId) => 
+    fetch(server + '/updatepublicstatus/' + walkId, {
+        method: 'PUT',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getGuideOrTitle = (search) =>
+    fetch(server + '/getguideortitle/' + search, {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getResultClick = (result) =>
+    fetch(server + '/getresultclick/' + result, {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getResultsWithinDistance = ({ lat, long, miles, limit, sortby }) =>
+    fetch(`${server}/getresultswithinfistance/${lat}/${long}/${miles}/${limit}/${sortby}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())

@@ -1,60 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postProfilePicture } from './fetch-data';
-import { updateInitialState } from './reducer-handlers';
+import { server } from './variables';
+import { updateUserObject } from './reducer-handlers';
 
-let ProfileDumb = ({ userObject, updateInitialState }) =>
+let ProfileDumb = ({ userObject, profileBeingViewed }) =>
     <div className="profile">
         <div className="profile-photo">
-            <img className="thumbnail" src={'http://localhost:5000/' + userObject.thumbnail} alt="User Thumbnail" />
+            <img className="thumbnail" src={server + '/' + profileBeingViewed.thumbnail} alt="User Thumbnail" />
         </div>
-        <form className="profile" onSubmit={
-                        (event) => 
-                        postProfilePictureEvent(event, userObject, updateInitialState)
-                        }>
-            <input type="file" name="thumbnail"
-                accept=".png, .jpg, .jpeg .gif" encType="multipart/form-data" />
-            <button type="submit">Update Profile Picture</button>
-        </form>
-        <form className="profile" onSubmit={
-            (event) =>
-            postLocation(event, userObject, updateInitialState)
-            }>
-            <input type="text" name="location" placeholder={userObject.location} />
-            <button type="submit">Update Home Town</button>
-        </form>
-        <form className="profile" onSubmit={
-            (event) =>
-            postAboutMe(event, userObject, updateInitialState)
-            }>
-            <textarea name="about-me" placeholder={userObject.aboutme} />
-            <button type="submit">Update About Me</button>
-        </form>
+        <h2>Home Town: {profileBeingViewed.location}</h2>
+        <h2>About Me</h2>
+        <p>{profileBeingViewed.aboutme}</p>
+        {
+            ableToEdit(userObject.id, profileBeingViewed.id)
+        }
     </div>
 
-let postProfilePictureEvent = (event, userObject, updateInitialState) => {
-    event.preventDefault()
-    postProfilePicture(event.target.thumbnail.files[0]).then(thumbnail => 
-        updateInitialState({ ...userObject, thumbnail }) );
-}
-
-let postLocation = (event, userObject, updateInitialState) => {
-    event.preventDefault();
-}
-
-let postAboutMe = (event, userObject, updateInitialState) => {
-    event.preventDefault();
+let ableToEdit = (userId, profileId) => {
+    if (userId === profileId) {
+        return <Link to="/editprofile">Edit Your Profile</Link>
+    }
 }
 
 let mapStateToProps = (state) => {
     return {
-        userObject: state.userObject
+        userObject: state.userObject,
+        profileBeingViewed: state.profileBeingViewed
      };
 }
 
 let mapDispatchToProps = (dispatch) =>
     ({
-        updateInitialState: (res) => dispatch(updateInitialState(res))
+        updateUserObject: (res) => dispatch(updateUserObject(res))
     })
 
 let Profile = connect(

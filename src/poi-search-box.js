@@ -1,12 +1,11 @@
 import React from 'react';
-import { compose, withProps, lifecycle } from 'recompose';
+import { compose, withProps, lifecycle, withState } from 'recompose';
 import {
         withScriptjs,
 } from 'react-google-maps';
 import { StandaloneSearchBox } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
-import Map from './google-map';
+import Map from './direction-renderer';
 import { postPoi } from './fetch-data';
-require('dotenv').config();
 
 let PoiSearchBoxDumb = ({ 
                             onSearchBoxMounted, 
@@ -15,41 +14,62 @@ let PoiSearchBoxDumb = ({
                             places, 
                             walkBeingEdited, 
                             addEditablePoi, 
-                            editablePois 
+                            editablePois,
+                            poiForm,
+                            setPoiForm,
+                            onSubmitForm,
                         }) =>
     <div data-standalone-searchbox="">
         <form className="poi-form" 
-                onSubmit={(event) => 
-                            submitPoi(event, walkBeingEdited.id, addEditablePoi, editablePois.length)
-                        }>
-            <input type="text" name="title" placeholder="Title" />
-            <StandaloneSearchBox
-                ref={onSearchBoxMounted}
-                bounds={bounds}
-                onPlacesChanged={onPlacesChanged}
-            >
-            <input
-                type="text"
-                placeholder="Search for POI"
-            />
-            </StandaloneSearchBox>
-            <ol>
-            {places.map(({ place_id, formatted_address, geometry: { location } }) =>
-                <div key={place_id}>
-                    <input name="address" defaultValue={formatted_address}/>
-                    <div>
-                        <input name="lat" defaultValue={location.lat()} />
-                        <input name="long" defaultValue={location.lng()} />
+            onSubmit={(event) =>  
+                        submitPoi(event, walkBeingEdited.id, 
+                            addEditablePoi, editablePois.length, 
+                            setPoiForm, onSubmitForm)
+                    }>
+            <input value={poiForm.title} maxlength="30" onChange={(event) => 
+                setPoiForm({...poiForm, title: event.target.value})} className="full-width" type="text" name="title" placeholder="Title" />
+            <div>
+                <StandaloneSearchBox
+                    ref={onSearchBoxMounted}
+                    bounds={bounds}
+                    onPlacesChanged={onPlacesChanged}  
+                    >
+                    <input
+                        type="text"
+                        placeholder="Search for POI"
+                        className="full-width"
+                        value={poiForm.search}
+                        onChange={(event) => setPoiForm({...poiForm, search: event.target.value})}
+                    />
+                </StandaloneSearchBox>
+                {places.map(({ place_id, formatted_address, geometry: { location } }) =>
+                    <div className="poi-form" key={place_id}>
+                        <input defaultValue={formatted_address}
+                            className="full-width" name="address"/>
+                        <div className="display-flex full-width">
+                            <input className="half-width" name="lat" defaultValue={location.lat()} />
+                            <input className="half-width" name="long" defaultValue={location.lng()} />
+                        </div>
                     </div>
-                </div>
-            )}
-            </ol>
-            <button type="submit">Submit</button>
+                )}
+            </div>
+            {
+                shouldSubmitShow(places)
+            }
         </form>
-        <Map displayedPois={editablePois} />
+        {
+            shouldMapShow(editablePois)
+        }
     </div>
 
-let submitPoi = async (event, walkid, addEditablePoi, position) => {
+let shouldMapShow = (editablePois) => {
+    if (editablePois[0]) {
+        return <Map displayedPois={editablePois} editMode="true" />
+    }
+}
+
+let submitPoi = async (event, walkid, addEditablePoi, 
+        position, setPoiForm, onSubmitForm) => {
     event.preventDefault();
     let poiData = {
         walkid,
@@ -60,7 +80,15 @@ let submitPoi = async (event, walkid, addEditablePoi, position) => {
         position,
     }
     let newPoi = await postPoi(poiData);
-    addEditablePoi(newPoi);
+    addEditablePoi(newPoi)
+    setPoiForm({title: '', search: ''});
+    onSubmitForm();
+}
+
+let shouldSubmitShow = (places) => {
+    if (places[0]) {
+        return <button type="submit">Submit</button>
+    }
 }
 
 let PoiSearchBox = compose(
@@ -71,6 +99,7 @@ let PoiSearchBox = compose(
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
   }),
+  withScriptjs,
   lifecycle({
     componentWillMount() {
       const refs = {}
@@ -87,10 +116,16 @@ let PoiSearchBox = compose(
             places,
           });
         },
+        onSubmitForm: () => {
+            this.setState({
+                places: [],
+            })
+        }
       })
     },
   }),
-  withScriptjs  
+  withState('poiForm', 'setPoiForm', {})  
+
 )(PoiSearchBoxDumb);
 
 export default PoiSearchBox;
