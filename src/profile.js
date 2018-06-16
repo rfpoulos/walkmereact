@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { server } from './variables';
 import { updateUserObject } from './reducer-handlers';
+import { compose, lifecycle } from 'recompose';
 
 let ProfileDumb = ({ userObject, profileBeingViewed }) =>
     <div className="profile">
         <div className="profile-photo">
             <img className="thumbnail" src={server + '/' + profileBeingViewed.thumbnail} alt="User Thumbnail" />
         </div>
+        <h2><strong>{profileBeingViewed.username}</strong></h2>
         <h2>Home Town: {profileBeingViewed.location}</h2>
         <h2>About Me</h2>
         <p>{profileBeingViewed.aboutme}</p>

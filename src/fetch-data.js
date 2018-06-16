@@ -306,7 +306,17 @@ export let getResultClick = (result) =>
     }).then(res => res.json())
 
 export let getResultsWithinDistance = ({ lat, long, miles, limit, sortby }) =>
-    fetch(`${server}/getresultswithinfistance/${lat}/${long}/${miles}/${limit}/${sortby}`, {
+    fetch(`${server}/getresultswithindistance/${lat}/${long}/${miles}/${limit}/${sortby}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: new Headers ({
+            "Content-Type": "application/json",
+            "authorization": localStorage.getItem('token')
+        })
+    }).then(res => res.json())
+
+export let getProfile = (username) =>
+    fetch(`${server}/getprofile/${username}`, {
         method: 'GET',
         mode: 'cors',
         headers: new Headers ({

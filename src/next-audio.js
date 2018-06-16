@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { server } from './variables';
 import { updatePoiBeingViewed } from './reducer-handlers';
 
-let NextAudioDumb = ({ poiBeingViewed, poisBeingViewed, history }) => 
+let NextAudioDumb = ({ poiBeingViewed, poisBeingViewed, history, updatePoiBeingViewed }) => 
     <div className="profile">
         <h2>On way to: {poisBeingViewed[poiBeingViewed.position + 1].title}</h2>
         <audio controls className="audio" >

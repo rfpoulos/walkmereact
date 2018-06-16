@@ -4,15 +4,34 @@ import { server } from './variables';
 import PoiCard from './dumb-poi-card';
 import MapWithADirectionsRenderer from './direction-renderer';
 import dottedLine from './images/Dotted-line.png';
-import { updatePoiBeingViewed } from './reducer-handlers';
+import { 
+            updatePoiBeingViewed, 
+            updateProfileBeingViewed,
+        } from './reducer-handlers';
+import {
+    getProfile,
+} from './fetch-data';
 
-let viewWalkDumb = ({ walkBeingViewed, poisBeingViewed, currentLocation, history, updatePoiBeingViewed }) =>
+let viewWalkDumb = ({ 
+                        walkBeingViewed, 
+                        poisBeingViewed, 
+                        currentLocation, 
+                        history, 
+                        updatePoiBeingViewed,
+                        updateProfileBeingViewed,
+                     }) =>
     <div className="profile">
         <div className="profile-photo">
             <img className="thumbnail" src={server + '/' + walkBeingViewed.thumbnail} />
         </div>
         <h1>{walkBeingViewed.title}</h1>
-        <div className="display-flex">
+        <div className="display-flex" onClick={
+            async () => {
+                let result = await getProfile(walkBeingViewed.username);
+                updateProfileBeingViewed(result);
+                history.push('/profile');
+            }
+        }>
             <h2>Guided By: <strong>{walkBeingViewed.username}</strong></h2>
             <div className="menu-picture padding">
                 <img className="thumbnail" alt="Guide's Picture" src={server + '/' + walkBeingViewed.guidethumbnail} />
@@ -86,6 +105,7 @@ let mapStateToProps = (state, { history }) =>
 let mapDispatchToProps = (dispatch) =>
     ({
         updatePoiBeingViewed: (poi) => dispatch(updatePoiBeingViewed(poi)),
+        updateProfileBeingViewed: (user) => dispatch(updateProfileBeingViewed(user)),
     })
 
 let viewWalk = connect(

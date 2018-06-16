@@ -14,6 +14,7 @@ let LocationDumb = compose(
         componentDidMount() {
             window.navigator.geolocation.watchPosition((pos) => 
                 success(pos, this.props.updateCurrentLocation));
+            
         }
     }),
 )(() => Fragment);
